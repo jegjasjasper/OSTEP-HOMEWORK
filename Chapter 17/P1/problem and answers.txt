@@ -1,0 +1,8 @@
+1. First run with the flags -n 10 -H 0 -p BEST -s 0 to gener-ate a few random allocations and frees. Can you predict what al-loc()/free() will return? Can you guess the state of the free list after each request? What do you notice about the free list over time?
+Solution:
+-based on what i've can observed, it seems he will get the exact byte requested. For example, when he requested for 3 byte, instead of getting 4 byte just like tutorial for malloc.py. he gets exactly the 3 byte requested and it most likely caused for making the header size 0. seens it didn't used coalensed, it will free the exam amout requested. it doesn't seem to suffer from internal fragmentatio.
+- it seems to me it will stack list of data/header freed and it seems that as the more you've alloc and free, the allocator choose 1 of the freed list, not the largest in the list. As i can observed, it will prioritize the smallest possible one that can fit what requested.
+
+
+
+- 
