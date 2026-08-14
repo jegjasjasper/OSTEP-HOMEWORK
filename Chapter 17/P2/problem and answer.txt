@@ -1,0 +1,3 @@
+2. How are the results different when using a WORST fit policy to search the free list (-p WORST)? What changes?
+Solution:
+the previous initially choose the largest because it's header where he can fit enough and as # of headers stack up, it will have enough header where it choose the size the fit enough to what allocator requested but with WORST, it seems it will keep continue using the largest one and if it continues, it will deplete largest one and finally pick the other header where initially ignored.
