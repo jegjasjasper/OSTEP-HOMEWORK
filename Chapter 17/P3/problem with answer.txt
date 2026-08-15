@@ -1,0 +1,3 @@
+3. What about when using FIRST fit (-p FIRST)? What speeds up when you use first fit?
+Solution:
+
