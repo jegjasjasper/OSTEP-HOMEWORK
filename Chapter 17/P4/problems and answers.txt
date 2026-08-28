@@ -1,0 +1,462 @@
+4. For the above questions, how the list is kept ordered can affect the
+time it takes to find a free location for some of the policies. Use
+the different free list orderings (-l ADDRSORT, -l SIZESORT+,
+-l SIZESORT-) to see how the policies and the list orderings in-
+teract.
+
+Solution:
+
+jegjasperbarajan@ubuntu-jeg:~/Desktop/OSTEP-HOMEWORK/Chapter 17$ python3 malloc.py -n 10 -H 0 -p BEST -s 0 -l ADDRSORT -c
+seed 0
+size 100
+baseAddr 1000
+headerSize 0
+alignment -1
+policy BEST
+listOrder ADDRSORT
+coalesce False
+numOps 10
+range 10
+percentAlloc 50
+allocList 
+compute True
+
+ptr[0] = Alloc(3) returned 1000 (searched 1 elements)
+Free List [ Size 1 ]: [ addr:1003 sz:97 ]
+
+Free(ptr[0])
+returned 0
+Free List [ Size 2 ]: [ addr:1000 sz:3 ][ addr:1003 sz:97 ]
+
+ptr[1] = Alloc(5) returned 1003 (searched 2 elements)
+Free List [ Size 2 ]: [ addr:1000 sz:3 ][ addr:1008 sz:92 ]
+
+Free(ptr[1])
+returned 0
+Free List [ Size 3 ]: [ addr:1000 sz:3 ][ addr:1003 sz:5 ][ addr:1008 sz:92 ]
+
+ptr[2] = Alloc(8) returned 1008 (searched 3 elements)
+Free List [ Size 3 ]: [ addr:1000 sz:3 ][ addr:1003 sz:5 ][ addr:1016 sz:84 ]
+
+Free(ptr[2])
+returned 0
+Free List [ Size 4 ]: [ addr:1000 sz:3 ][ addr:1003 sz:5 ][ addr:1008 sz:8 ][ addr:1016 sz:84 ]
+
+ptr[3] = Alloc(8) returned 1008 (searched 4 elements)
+Free List [ Size 3 ]: [ addr:1000 sz:3 ][ addr:1003 sz:5 ][ addr:1016 sz:84 ]
+
+Free(ptr[3])
+returned 0
+Free List [ Size 4 ]: [ addr:1000 sz:3 ][ addr:1003 sz:5 ][ addr:1008 sz:8 ][ addr:1016 sz:84 ]
+
+ptr[4] = Alloc(2) returned 1000 (searched 4 elements)
+Free List [ Size 4 ]: [ addr:1002 sz:1 ][ addr:1003 sz:5 ][ addr:1008 sz:8 ][ addr:1016 sz:84 ]
+
+ptr[5] = Alloc(7) returned 1008 (searched 4 elements)
+Free List [ Size 4 ]: [ addr:1002 sz:1 ][ addr:1003 sz:5 ][ addr:1015 sz:1 ][ addr:1016 sz:84 ]
+
+jegjasperbarajan@ubuntu-jeg:~/Desktop/OSTEP-HOMEWORK/Chapter 17$ python3 malloc.py -n 10 -H 0 -p BEST -s 0 -l SIZESORT+ -c
+seed 0
+size 100
+baseAddr 1000
+headerSize 0
+alignment -1
+policy BEST
+listOrder SIZESORT+
+coalesce False
+numOps 10
+range 10
+percentAlloc 50
+allocList 
+compute True
+
+ptr[0] = Alloc(3) returned 1000 (searched 1 elements)
+Free List [ Size 1 ]: [ addr:1003 sz:97 ]
+
+Free(ptr[0])
+returned 0
+Free List [ Size 2 ]: [ addr:1000 sz:3 ][ addr:1003 sz:97 ]
+
+ptr[1] = Alloc(5) returned 1003 (searched 2 elements)
+Free List [ Size 2 ]: [ addr:1000 sz:3 ][ addr:1008 sz:92 ]
+
+Free(ptr[1])
+returned 0
+Free List [ Size 3 ]: [ addr:1000 sz:3 ][ addr:1003 sz:5 ][ addr:1008 sz:92 ]
+
+ptr[2] = Alloc(8) returned 1008 (searched 3 elements)
+Free List [ Size 3 ]: [ addr:1000 sz:3 ][ addr:1003 sz:5 ][ addr:1016 sz:84 ]
+
+Free(ptr[2])
+returned 0
+Free List [ Size 4 ]: [ addr:1000 sz:3 ][ addr:1003 sz:5 ][ addr:1008 sz:8 ][ addr:1016 sz:84 ]
+
+ptr[3] = Alloc(8) returned 1008 (searched 4 elements)
+Free List [ Size 3 ]: [ addr:1000 sz:3 ][ addr:1003 sz:5 ][ addr:1016 sz:84 ]
+
+Free(ptr[3])
+returned 0
+Free List [ Size 4 ]: [ addr:1000 sz:3 ][ addr:1003 sz:5 ][ addr:1008 sz:8 ][ addr:1016 sz:84 ]
+
+ptr[4] = Alloc(2) returned 1000 (searched 4 elements)
+Free List [ Size 4 ]: [ addr:1002 sz:1 ][ addr:1003 sz:5 ][ addr:1008 sz:8 ][ addr:1016 sz:84 ]
+
+ptr[5] = Alloc(7) returned 1008 (searched 4 elements)
+Free List [ Size 4 ]: [ addr:1002 sz:1 ][ addr:1003 sz:5 ][ addr:1015 sz:1 ][ addr:1016 sz:84 ]
+
+jegjasperbarajan@ubuntu-jeg:~/Desktop/OSTEP-HOMEWORK/Chapter 17$ python3 malloc.py -n 10 -H 0 -p BEST -s 0 -l SIZESORT- -c
+seed 0
+size 100
+baseAddr 1000
+headerSize 0
+alignment -1
+policy BEST
+listOrder SIZESORT-
+coalesce False
+numOps 10
+range 10
+percentAlloc 50
+allocList 
+compute True
+
+ptr[0] = Alloc(3) returned 1000 (searched 1 elements)
+Free List [ Size 1 ]: [ addr:1003 sz:97 ]
+
+Free(ptr[0])
+returned 0
+Free List [ Size 2 ]: [ addr:1003 sz:97 ][ addr:1000 sz:3 ]
+
+ptr[1] = Alloc(5) returned 1003 (searched 2 elements)
+Free List [ Size 2 ]: [ addr:1008 sz:92 ][ addr:1000 sz:3 ]
+
+Free(ptr[1])
+returned 0
+Free List [ Size 3 ]: [ addr:1008 sz:92 ][ addr:1003 sz:5 ][ addr:1000 sz:3 ]
+
+ptr[2] = Alloc(8) returned 1008 (searched 3 elements)
+Free List [ Size 3 ]: [ addr:1016 sz:84 ][ addr:1003 sz:5 ][ addr:1000 sz:3 ]
+
+Free(ptr[2])
+returned 0
+Free List [ Size 4 ]: [ addr:1016 sz:84 ][ addr:1008 sz:8 ][ addr:1003 sz:5 ][ addr:1000 sz:3 ]
+
+ptr[3] = Alloc(8) returned 1008 (searched 4 elements)
+Free List [ Size 3 ]: [ addr:1016 sz:84 ][ addr:1003 sz:5 ][ addr:1000 sz:3 ]
+
+Free(ptr[3])
+returned 0
+Free List [ Size 4 ]: [ addr:1016 sz:84 ][ addr:1008 sz:8 ][ addr:1003 sz:5 ][ addr:1000 sz:3 ]
+
+ptr[4] = Alloc(2) returned 1000 (searched 4 elements)
+Free List [ Size 4 ]: [ addr:1016 sz:84 ][ addr:1008 sz:8 ][ addr:1003 sz:5 ][ addr:1002 sz:1 ]
+
+ptr[5] = Alloc(7) returned 1008 (searched 4 elements)
+Free List [ Size 4 ]: [ addr:1016 sz:84 ][ addr:1015 sz:1 ][ addr:1003 sz:5 ][ addr:1002 sz:1 ]
+
+
+in the BEST policy, both ADDRSORT and SIZESORT+ have exact ordered of how they sorted the free list but when it comes SIZESORT-, it's like the other 2 but in descending order of how the ADDRSORT and SIZESORT+ sorted.
+
+jegjasperbarajan@ubuntu-jeg:~/Desktop/OSTEP-HOMEWORK/Chapter 17$ python3 malloc.py -n 10 -H 0 -p WORST -s 0 -l ADDRSORT -c
+seed 0
+size 100
+baseAddr 1000
+headerSize 0
+alignment -1
+policy WORST
+listOrder ADDRSORT
+coalesce False
+numOps 10
+range 10
+percentAlloc 50
+allocList 
+compute True
+
+ptr[0] = Alloc(3) returned 1000 (searched 1 elements)
+Free List [ Size 1 ]: [ addr:1003 sz:97 ]
+
+Free(ptr[0])
+returned 0
+Free List [ Size 2 ]: [ addr:1000 sz:3 ][ addr:1003 sz:97 ]
+
+ptr[1] = Alloc(5) returned 1003 (searched 2 elements)
+Free List [ Size 2 ]: [ addr:1000 sz:3 ][ addr:1008 sz:92 ]
+
+Free(ptr[1])
+returned 0
+Free List [ Size 3 ]: [ addr:1000 sz:3 ][ addr:1003 sz:5 ][ addr:1008 sz:92 ]
+
+ptr[2] = Alloc(8) returned 1008 (searched 3 elements)
+Free List [ Size 3 ]: [ addr:1000 sz:3 ][ addr:1003 sz:5 ][ addr:1016 sz:84 ]
+
+Free(ptr[2])
+returned 0
+Free List [ Size 4 ]: [ addr:1000 sz:3 ][ addr:1003 sz:5 ][ addr:1008 sz:8 ][ addr:1016 sz:84 ]
+
+ptr[3] = Alloc(8) returned 1016 (searched 4 elements)
+Free List [ Size 4 ]: [ addr:1000 sz:3 ][ addr:1003 sz:5 ][ addr:1008 sz:8 ][ addr:1024 sz:76 ]
+
+Free(ptr[3])
+returned 0
+Free List [ Size 5 ]: [ addr:1000 sz:3 ][ addr:1003 sz:5 ][ addr:1008 sz:8 ][ addr:1016 sz:8 ][ addr:1024 sz:76 ]
+
+ptr[4] = Alloc(2) returned 1024 (searched 5 elements)
+Free List [ Size 5 ]: [ addr:1000 sz:3 ][ addr:1003 sz:5 ][ addr:1008 sz:8 ][ addr:1016 sz:8 ][ addr:1026 sz:74 ]
+
+ptr[5] = Alloc(7) returned 1026 (searched 5 elements)
+Free List [ Size 5 ]: [ addr:1000 sz:3 ][ addr:1003 sz:5 ][ addr:1008 sz:8 ][ addr:1016 sz:8 ][ addr:1033 sz:67 ]
+
+jegjasperbarajan@ubuntu-jeg:~/Desktop/OSTEP-HOMEWORK/Chapter 17$ python3 malloc.py -n 10 -H 0 -p WORST -s 0 -l SIZESORT+ -c
+seed 0
+size 100
+baseAddr 1000
+headerSize 0
+alignment -1
+policy WORST
+listOrder SIZESORT+
+coalesce False
+numOps 10
+range 10
+percentAlloc 50
+allocList 
+compute True
+
+ptr[0] = Alloc(3) returned 1000 (searched 1 elements)
+Free List [ Size 1 ]: [ addr:1003 sz:97 ]
+
+Free(ptr[0])
+returned 0
+Free List [ Size 2 ]: [ addr:1000 sz:3 ][ addr:1003 sz:97 ]
+
+ptr[1] = Alloc(5) returned 1003 (searched 2 elements)
+Free List [ Size 2 ]: [ addr:1000 sz:3 ][ addr:1008 sz:92 ]
+
+Free(ptr[1])
+returned 0
+Free List [ Size 3 ]: [ addr:1000 sz:3 ][ addr:1003 sz:5 ][ addr:1008 sz:92 ]
+
+ptr[2] = Alloc(8) returned 1008 (searched 3 elements)
+Free List [ Size 3 ]: [ addr:1000 sz:3 ][ addr:1003 sz:5 ][ addr:1016 sz:84 ]
+
+Free(ptr[2])
+returned 0
+Free List [ Size 4 ]: [ addr:1000 sz:3 ][ addr:1003 sz:5 ][ addr:1008 sz:8 ][ addr:1016 sz:84 ]
+
+ptr[3] = Alloc(8) returned 1016 (searched 4 elements)
+Free List [ Size 4 ]: [ addr:1000 sz:3 ][ addr:1003 sz:5 ][ addr:1008 sz:8 ][ addr:1024 sz:76 ]
+
+Free(ptr[3])
+returned 0
+Free List [ Size 5 ]: [ addr:1000 sz:3 ][ addr:1003 sz:5 ][ addr:1008 sz:8 ][ addr:1016 sz:8 ][ addr:1024 sz:76 ]
+
+ptr[4] = Alloc(2) returned 1024 (searched 5 elements)
+Free List [ Size 5 ]: [ addr:1000 sz:3 ][ addr:1003 sz:5 ][ addr:1008 sz:8 ][ addr:1016 sz:8 ][ addr:1026 sz:74 ]
+
+ptr[5] = Alloc(7) returned 1026 (searched 5 elements)
+Free List [ Size 5 ]: [ addr:1000 sz:3 ][ addr:1003 sz:5 ][ addr:1008 sz:8 ][ addr:1016 sz:8 ][ addr:1033 sz:67 ]
+
+jegjasperbarajan@ubuntu-jeg:~/Desktop/OSTEP-HOMEWORK/Chapter 17$ python3 malloc.py -n 10 -H 0 -p WORST -s 0 -l SIZESORT- -c
+seed 0
+size 100
+baseAddr 1000
+headerSize 0
+alignment -1
+policy WORST
+listOrder SIZESORT-
+coalesce False
+numOps 10
+range 10
+percentAlloc 50
+allocList 
+compute True
+
+ptr[0] = Alloc(3) returned 1000 (searched 1 elements)
+Free List [ Size 1 ]: [ addr:1003 sz:97 ]
+
+Free(ptr[0])
+returned 0
+Free List [ Size 2 ]: [ addr:1003 sz:97 ][ addr:1000 sz:3 ]
+
+ptr[1] = Alloc(5) returned 1003 (searched 2 elements)
+Free List [ Size 2 ]: [ addr:1008 sz:92 ][ addr:1000 sz:3 ]
+
+Free(ptr[1])
+returned 0
+Free List [ Size 3 ]: [ addr:1008 sz:92 ][ addr:1003 sz:5 ][ addr:1000 sz:3 ]
+
+ptr[2] = Alloc(8) returned 1008 (searched 3 elements)
+Free List [ Size 3 ]: [ addr:1016 sz:84 ][ addr:1003 sz:5 ][ addr:1000 sz:3 ]
+
+Free(ptr[2])
+returned 0
+Free List [ Size 4 ]: [ addr:1016 sz:84 ][ addr:1008 sz:8 ][ addr:1003 sz:5 ][ addr:1000 sz:3 ]
+
+ptr[3] = Alloc(8) returned 1016 (searched 4 elements)
+Free List [ Size 4 ]: [ addr:1024 sz:76 ][ addr:1008 sz:8 ][ addr:1003 sz:5 ][ addr:1000 sz:3 ]
+
+Free(ptr[3])
+returned 0
+Free List [ Size 5 ]: [ addr:1024 sz:76 ][ addr:1008 sz:8 ][ addr:1016 sz:8 ][ addr:1003 sz:5 ][ addr:1000 sz:3 ]
+
+ptr[4] = Alloc(2) returned 1024 (searched 5 elements)
+Free List [ Size 5 ]: [ addr:1026 sz:74 ][ addr:1008 sz:8 ][ addr:1016 sz:8 ][ addr:1003 sz:5 ][ addr:1000 sz:3 ]
+
+ptr[5] = Alloc(7) returned 1026 (searched 5 elements)
+Free List [ Size 5 ]: [ addr:1033 sz:67 ][ addr:1008 sz:8 ][ addr:1016 sz:8 ][ addr:1003 sz:5 ][ addr:1000 sz:3 ]
+
+
+in the WORST policy, the exact ordering shown from BEST policy, where both ADDRSORT AND SIZESORT+ have exact sorting and in SIZESORT-, similar to the 2 but in descenting of their free list.
+
+jegjasperbarajan@ubuntu-jeg:~/Desktop/OSTEP-HOMEWORK/Chapter 17$ python3 malloc.py -n 10 -H 0 -p FIRST -s 0 -l ADDRSORT -c
+seed 0
+size 100
+baseAddr 1000
+headerSize 0
+alignment -1
+policy FIRST
+listOrder ADDRSORT
+coalesce False
+numOps 10
+range 10
+percentAlloc 50
+allocList 
+compute True
+
+ptr[0] = Alloc(3) returned 1000 (searched 1 elements)
+Free List [ Size 1 ]: [ addr:1003 sz:97 ]
+
+Free(ptr[0])
+returned 0
+Free List [ Size 2 ]: [ addr:1000 sz:3 ][ addr:1003 sz:97 ]
+
+ptr[1] = Alloc(5) returned 1003 (searched 2 elements)
+Free List [ Size 2 ]: [ addr:1000 sz:3 ][ addr:1008 sz:92 ]
+
+Free(ptr[1])
+returned 0
+Free List [ Size 3 ]: [ addr:1000 sz:3 ][ addr:1003 sz:5 ][ addr:1008 sz:92 ]
+
+ptr[2] = Alloc(8) returned 1008 (searched 3 elements)
+Free List [ Size 3 ]: [ addr:1000 sz:3 ][ addr:1003 sz:5 ][ addr:1016 sz:84 ]
+
+Free(ptr[2])
+returned 0
+Free List [ Size 4 ]: [ addr:1000 sz:3 ][ addr:1003 sz:5 ][ addr:1008 sz:8 ][ addr:1016 sz:84 ]
+
+ptr[3] = Alloc(8) returned 1008 (searched 3 elements)
+Free List [ Size 3 ]: [ addr:1000 sz:3 ][ addr:1003 sz:5 ][ addr:1016 sz:84 ]
+
+Free(ptr[3])
+returned 0
+Free List [ Size 4 ]: [ addr:1000 sz:3 ][ addr:1003 sz:5 ][ addr:1008 sz:8 ][ addr:1016 sz:84 ]
+
+ptr[4] = Alloc(2) returned 1000 (searched 1 elements)
+Free List [ Size 4 ]: [ addr:1002 sz:1 ][ addr:1003 sz:5 ][ addr:1008 sz:8 ][ addr:1016 sz:84 ]
+
+ptr[5] = Alloc(7) returned 1008 (searched 3 elements)
+Free List [ Size 4 ]: [ addr:1002 sz:1 ][ addr:1003 sz:5 ][ addr:1015 sz:1 ][ addr:1016 sz:84 ]
+
+jegjasperbarajan@ubuntu-jeg:~/Desktop/OSTEP-HOMEWORK/Chapter 17$ python3 malloc.py -n 10 -H 0 -p FIRST -s 0 -l SIZESORT+ -c
+seed 0
+size 100
+baseAddr 1000
+headerSize 0
+alignment -1
+policy FIRST
+listOrder SIZESORT+
+coalesce False
+numOps 10
+range 10
+percentAlloc 50
+allocList 
+compute True
+
+ptr[0] = Alloc(3) returned 1000 (searched 1 elements)
+Free List [ Size 1 ]: [ addr:1003 sz:97 ]
+
+Free(ptr[0])
+returned 0
+Free List [ Size 2 ]: [ addr:1000 sz:3 ][ addr:1003 sz:97 ]
+
+ptr[1] = Alloc(5) returned 1003 (searched 2 elements)
+Free List [ Size 2 ]: [ addr:1000 sz:3 ][ addr:1008 sz:92 ]
+
+Free(ptr[1])
+returned 0
+Free List [ Size 3 ]: [ addr:1000 sz:3 ][ addr:1003 sz:5 ][ addr:1008 sz:92 ]
+
+ptr[2] = Alloc(8) returned 1008 (searched 3 elements)
+Free List [ Size 3 ]: [ addr:1000 sz:3 ][ addr:1003 sz:5 ][ addr:1016 sz:84 ]
+
+Free(ptr[2])
+returned 0
+Free List [ Size 4 ]: [ addr:1000 sz:3 ][ addr:1003 sz:5 ][ addr:1008 sz:8 ][ addr:1016 sz:84 ]
+
+ptr[3] = Alloc(8) returned 1008 (searched 3 elements)
+Free List [ Size 3 ]: [ addr:1000 sz:3 ][ addr:1003 sz:5 ][ addr:1016 sz:84 ]
+
+Free(ptr[3])
+returned 0
+Free List [ Size 4 ]: [ addr:1000 sz:3 ][ addr:1003 sz:5 ][ addr:1008 sz:8 ][ addr:1016 sz:84 ]
+
+ptr[4] = Alloc(2) returned 1000 (searched 1 elements)
+Free List [ Size 4 ]: [ addr:1002 sz:1 ][ addr:1003 sz:5 ][ addr:1008 sz:8 ][ addr:1016 sz:84 ]
+
+ptr[5] = Alloc(7) returned 1008 (searched 3 elements)
+Free List [ Size 4 ]: [ addr:1002 sz:1 ][ addr:1003 sz:5 ][ addr:1015 sz:1 ][ addr:1016 sz:84 ]
+
+jegjasperbarajan@ubuntu-jeg:~/Desktop/OSTEP-HOMEWORK/Chapter 17$ python3 malloc.py -n 10 -H 0 -p FIRST -s 0 -l SIZESORT- -c
+seed 0
+size 100
+baseAddr 1000
+headerSize 0
+alignment -1
+policy FIRST
+listOrder SIZESORT-
+coalesce False
+numOps 10
+range 10
+percentAlloc 50
+allocList 
+compute True
+
+ptr[0] = Alloc(3) returned 1000 (searched 1 elements)
+Free List [ Size 1 ]: [ addr:1003 sz:97 ]
+
+Free(ptr[0])
+returned 0
+Free List [ Size 2 ]: [ addr:1003 sz:97 ][ addr:1000 sz:3 ]
+
+ptr[1] = Alloc(5) returned 1003 (searched 1 elements)
+Free List [ Size 2 ]: [ addr:1008 sz:92 ][ addr:1000 sz:3 ]
+
+Free(ptr[1])
+returned 0
+Free List [ Size 3 ]: [ addr:1008 sz:92 ][ addr:1003 sz:5 ][ addr:1000 sz:3 ]
+
+ptr[2] = Alloc(8) returned 1008 (searched 1 elements)
+Free List [ Size 3 ]: [ addr:1016 sz:84 ][ addr:1003 sz:5 ][ addr:1000 sz:3 ]
+
+Free(ptr[2])
+returned 0
+Free List [ Size 4 ]: [ addr:1016 sz:84 ][ addr:1008 sz:8 ][ addr:1003 sz:5 ][ addr:1000 sz:3 ]
+
+ptr[3] = Alloc(8) returned 1016 (searched 1 elements)
+Free List [ Size 4 ]: [ addr:1024 sz:76 ][ addr:1008 sz:8 ][ addr:1003 sz:5 ][ addr:1000 sz:3 ]
+
+Free(ptr[3])
+returned 0
+Free List [ Size 5 ]: [ addr:1024 sz:76 ][ addr:1008 sz:8 ][ addr:1016 sz:8 ][ addr:1003 sz:5 ][ addr:1000 sz:3 ]
+
+ptr[4] = Alloc(2) returned 1024 (searched 1 elements)
+Free List [ Size 5 ]: [ addr:1026 sz:74 ][ addr:1008 sz:8 ][ addr:1016 sz:8 ][ addr:1003 sz:5 ][ addr:1000 sz:3 ]
+
+ptr[5] = Alloc(7) returned 1026 (searched 1 elements)
+Free List [ Size 5 ]: [ addr:1033 sz:67 ][ addr:1008 sz:8 ][ addr:1016 sz:8 ][ addr:1003 sz:5 ][ addr:1000 sz:3 ]
+
+jegjasperbarajan@ubuntu-jeg:~/Desktop/OSTEP-HOMEWORK/Chapter 17$ 
+
+in the FIRST policy, this is where some difference shown, both ADDRSORT AND SIZESORT- have the exact sorting as the previous but SIZESORT- have some some irrigular pattern in their free list like address 67 -> address 8 -> address 16. it's no longer descending order.
+
+also, i've noticed that ADDRSORT sort its free list based on address, SIZESORT+ sorted its free list based on the header size(from small to largest), and SIZESORT- sorted its free list based on the header size but in descending order in his header size.
+
+Checking my answer and give me score.
