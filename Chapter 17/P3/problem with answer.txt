@@ -1,3 +1,3 @@
 3. What about when using FIRST fit (-p FIRST)? What speeds up when you use first fit?
 Solution:
-
+It seems to initally act like -BEST because the largest free block is available to fit but as the more blocks in the free list, it seems to always choose the first free block that can fit the allocator requested. that also means that allocater who spend less time searching for free block. Unlike, -BEST and -WORST which always search the entire free list every time allocator requested.
