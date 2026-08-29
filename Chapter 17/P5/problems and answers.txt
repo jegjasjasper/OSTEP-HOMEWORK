@@ -1,0 +1,227 @@
+5. Coalescing of a free list can be quite important. Increase the number
+of random allocations (say to -n 1000). What happens to larger
+allocation requests over time? Run with and without coalescing
+(i.e., without and with the -C flag). What differences in outcome do
+you see? How big is the free list over time in each case? Does the
+ordering of the list matter in this case?
+
+solution:
+
+jegjasperbarajan@ubuntu-jeg:~/Desktop/OSTEP-HOMEWORK/Chapter 17$ python3 malloc.py -n 1000 -H 0 -p BEST -s 0 -c
+seed 0
+size 100
+baseAddr 1000
+headerSize 0
+alignment -1
+policy BEST
+listOrder ADDRSORT
+coalesce False
+numOps 1000
+range 10
+percentAlloc 50
+allocList 
+compute True
+
+ptr[0] = Alloc(3) returned 1000 (searched 1 elements)
+Free List [ Size 1 ]: [ addr:1003 sz:97 ]
+
+Free(ptr[0])
+returned 0
+Free List [ Size 2 ]: [ addr:1000 sz:3 ][ addr:1003 sz:97 ]
+
+ptr[1] = Alloc(5) returned 1003 (searched 2 elements)
+Free List [ Size 2 ]: [ addr:1000 sz:3 ][ addr:1008 sz:92 ]
+
+...
+....
+....
+....
+....
+....
+....
+....
+
+Free(ptr[585])
+returned 0
+Free List [ Size 29 ]: [ addr:1002 sz:1 ][ addr:1006 sz:1 ][ addr:1007 sz:1 ][ addr:1008 sz:5 ][ addr:1013 sz:1 ][ addr:1014 sz:1 ][ addr:1015 sz:1 ][ addr:1016 sz:5 ][ addr:1021 sz:1 ][ addr:1022 sz:3 ][ addr:1031 sz:1 ][ addr:1032 sz:2 ][ addr:1034 sz:3 ][ addr:1037 sz:4 ][ addr:1041 sz:1 ][ addr:1042 sz:2 ][ addr:1052 sz:1 ][ addr:1059 sz:2 ][ addr:1061 sz:1 ][ addr:1068 sz:1 ][ addr:1069 sz:3 ][ addr:1072 sz:5 ][ addr:1077 sz:3 ][ addr:1080 sz:1 ][ addr:1081 sz:5 ][ addr:1086 sz:3 ][ addr:1089 sz:5 ][ addr:1094 sz:2 ][ addr:1096 sz:4 ]
+
+Free(ptr[583])
+returned 0
+Free List [ Size 30 ]: [ addr:1002 sz:1 ][ addr:1006 sz:1 ][ addr:1007 sz:1 ][ addr:1008 sz:5 ][ addr:1013 sz:1 ][ addr:1014 sz:1 ][ addr:1015 sz:1 ][ addr:1016 sz:5 ][ addr:1021 sz:1 ][ addr:1022 sz:3 ][ addr:1031 sz:1 ][ addr:1032 sz:2 ][ addr:1034 sz:3 ][ addr:1037 sz:4 ][ addr:1041 sz:1 ][ addr:1042 sz:2 ][ addr:1052 sz:1 ][ addr:1053 sz:6 ][ addr:1059 sz:2 ][ addr:1061 sz:1 ][ addr:1068 sz:1 ][ addr:1069 sz:3 ][ addr:1072 sz:5 ][ addr:1077 sz:3 ][ addr:1080 sz:1 ][ addr:1081 sz:5 ][ addr:1086 sz:3 ][ addr:1089 sz:5 ][ addr:1094 sz:2 ][ addr:1096 sz:4 ]
+
+Free(ptr[588])
+returned 0
+Free List [ Size 31 ]: [ addr:1000 sz:2 ][ addr:1002 sz:1 ][ addr:1006 sz:1 ][ addr:1007 sz:1 ][ addr:1008 sz:5 ][ addr:1013 sz:1 ][ addr:1014 sz:1 ][ addr:1015 sz:1 ][ addr:1016 sz:5 ][ addr:1021 sz:1 ][ addr:1022 sz:3 ][ addr:1031 sz:1 ][ addr:1032 sz:2 ][ addr:1034 sz:3 ][ addr:1037 sz:4 ][ addr:1041 sz:1 ][ addr:1042 sz:2 ][ addr:1052 sz:1 ][ addr:1053 sz:6 ][ addr:1059 sz:2 ][ addr:1061 sz:1 ][ addr:1068 sz:1 ][ addr:1069 sz:3 ][ addr:1072 sz:5 ][ addr:1077 sz:3 ][ addr:1080 sz:1 ][ addr:1081 sz:5 ][ addr:1086 sz:3 ][ addr:1089 sz:5 ][ addr:1094 sz:2 ][ addr:1096 sz:4 ]
+
+ptr[590] = Alloc(9) returned -1 (searched 31 elements)
+Free List [ Size 31 ]: [ addr:1000 sz:2 ][ addr:1002 sz:1 ][ addr:1006 sz:1 ][ addr:1007 sz:1 ][ addr:1008 sz:5 ][ addr:1013 sz:1 ][ addr:1014 sz:1 ][ addr:1015 sz:1 ][ addr:1016 sz:5 ][ addr:1021 sz:1 ][ addr:1022 sz:3 ][ addr:1031 sz:1 ][ addr:1032 sz:2 ][ addr:1034 sz:3 ][ addr:1037 sz:4 ][ addr:1041 sz:1 ][ addr:1042 sz:2 ][ addr:1052 sz:1 ][ addr:1053 sz:6 ][ addr:1059 sz:2 ][ addr:1061 sz:1 ][ addr:1068 sz:1 ][ addr:1069 sz:3 ][ addr:1072 sz:5 ][ addr:1077 sz:3 ][ addr:1080 sz:1 ][ addr:1081 sz:5 ][ addr:1086 sz:3 ][ addr:1089 sz:5 ][ addr:1094 sz:2 ][ addr:1096 sz:4 ]
+
+
+
+jegjasperbarajan@ubuntu-jeg:~/Desktop/OSTEP-HOMEWORK/Chapter 17$ python3 malloc.py -n 1000 -H 0 -p BEST -s 0 -C -c
+seed 0
+size 100
+baseAddr 1000
+headerSize 0
+alignment -1
+policy BEST
+listOrder ADDRSORT
+coalesce True
+numOps 1000
+range 10
+percentAlloc 50
+allocList 
+compute True
+
+ptr[0] = Alloc(3) returned 1000 (searched 1 elements)
+Free List [ Size 1 ]: [ addr:1003 sz:97 ]
+
+Free(ptr[0])
+returned 0
+Free List [ Size 1 ]: [ addr:1000 sz:100 ]
+
+ptr[1] = Alloc(5) returned 1000 (searched 1 elements)
+Free List [ Size 1 ]: [ addr:1005 sz:95 ]
+
+Free(ptr[1])
+returned 0
+Free List [ Size 1 ]: [ addr:1000 sz:100 ]
+
+...
+...
+...
+...
+
+Free(ptr[508])
+returned 0
+Free List [ Size 1 ]: [ addr:1000 sz:100 ]
+
+ptr[511] = Alloc(9) returned 1000 (searched 1 elements)
+Free List [ Size 1 ]: [ addr:1009 sz:91 ]
+
+ptr[512] = Alloc(7) returned 1009 (searched 1 elements)
+Free List [ Size 1 ]: [ addr:1016 sz:84 ]
+
+Free(ptr[512])
+returned 0
+Free List [ Size 1 ]: [ addr:1009 sz:91 ]
+
+ptr[513] = Alloc(4) returned 1009 (searched 1 elements)
+Free List [ Size 1 ]: [ addr:1013 sz:87 ]
+
+Free(ptr[513])
+returned 0
+Free List [ Size 1 ]: [ addr:1009 sz:91 ]
+
+Free(ptr[511])
+returned 0
+Free List [ Size 1 ]: [ addr:1000 sz:100 ]
+
+ptr[514] = Alloc(2) returned 1000 (searched 1 elements)
+Free List [ Size 1 ]: [ addr:1002 sz:98 ]
+
+jegjasperbarajan@ubuntu-jeg:~/Desktop/OSTEP-HOMEWORK/Chapter 17$ 
+
+
+Based on what i've observed between with or without coalescing, it seems that it overtime without coalescing the free list will fill up so much that at some point it will return -1 because there's no longer available large block that you can split while with coalescing, it prevent from filling it up because it merge back once it's freed and at the end of simulation, only 1 large block remain. 
+
+egjasperbarajan@ubuntu-jeg:~/Desktop/OSTEP-HOMEWORK/Chapter 17$ python3 malloc.py -n 1000 -H 0 -p BEST -s 0 -l SIZESORT- -C -c
+seed 0
+size 100
+baseAddr 1000
+headerSize 0
+alignment -1
+policy BEST
+listOrder SIZESORT-
+coalesce True
+numOps 1000
+range 10
+percentAlloc 50
+allocList 
+compute True
+
+ptr[0] = Alloc(3) returned 1000 (searched 1 elements)
+Free List [ Size 1 ]: [ addr:1003 sz:97 ]
+
+Free(ptr[0])
+returned 0
+Free List [ Size 2 ]: [ addr:1003 sz:97 ][ addr:1000 sz:3 ]
+
+ptr[1] = Alloc(5) returned 1003 (searched 2 elements)
+Free List [ Size 2 ]: [ addr:1008 sz:92 ][ addr:1000 sz:3 ]
+
+Free(ptr[1])
+returned 0
+Free List [ Size 3 ]: [ addr:1008 sz:92 ][ addr:1003 sz:5 ][ addr:1000 sz:3 ]
+
+...
+...
+...
+...
+
+Free(ptr[580])
+returned 0
+Free List [ Size 35 ]: [ addr:1044 sz:7 ][ addr:1089 sz:6 ][ addr:1008 sz:5 ][ addr:1053 sz:5 ][ addr:1031 sz:5 ][ addr:1016 sz:4 ][ addr:1058 sz:3 ][ addr:1069 sz:3 ][ addr:1097 sz:3 ][ addr:1014 sz:2 ][ addr:1067 sz:2 ][ addr:1023 sz:2 ][ addr:1000 sz:2 ][ addr:1042 sz:2 ][ addr:1062 sz:1 ][ addr:1030 sz:1 ][ addr:1061 sz:1 ][ addr:1041 sz:1 ][ addr:1013 sz:1 ][ addr:1020 sz:1 ][ addr:1002 sz:1 ][ addr:1052 sz:1 ][ addr:1007 sz:1 ][ addr:1088 sz:1 ][ addr:1006 sz:1 ][ addr:1022 sz:1 ][ addr:1080 sz:1 ][ addr:1095 sz:1 ][ addr:1051 sz:1 ][ addr:1078 sz:1 ][ addr:1021 sz:1 ][ addr:1079 sz:1 ][ addr:1096 sz:1 ][ addr:1036 sz:1 ][ addr:1087 sz:1 ]
+
+ptr[587] = Alloc(2) returned 1014 (searched 35 elements)
+Free List [ Size 34 ]: [ addr:1044 sz:7 ][ addr:1089 sz:6 ][ addr:1008 sz:5 ][ addr:1053 sz:5 ][ addr:1031 sz:5 ][ addr:1016 sz:4 ][ addr:1058 sz:3 ][ addr:1069 sz:3 ][ addr:1097 sz:3 ][ addr:1067 sz:2 ][ addr:1023 sz:2 ][ addr:1000 sz:2 ][ addr:1042 sz:2 ][ addr:1062 sz:1 ][ addr:1030 sz:1 ][ addr:1061 sz:1 ][ addr:1041 sz:1 ][ addr:1013 sz:1 ][ addr:1020 sz:1 ][ addr:1002 sz:1 ][ addr:1052 sz:1 ][ addr:1007 sz:1 ][ addr:1088 sz:1 ][ addr:1006 sz:1 ][ addr:1022 sz:1 ][ addr:1080 sz:1 ][ addr:1095 sz:1 ][ addr:1051 sz:1 ][ addr:1078 sz:1 ][ addr:1021 sz:1 ][ addr:1079 sz:1 ][ addr:1096 sz:1 ][ addr:1036 sz:1 ][ addr:1087 sz:1 ]
+
+ptr[588] = Alloc(6) returned 1089 (searched 34 elements)
+Free List [ Size 33 ]: [ addr:1044 sz:7 ][ addr:1008 sz:5 ][ addr:1053 sz:5 ][ addr:1031 sz:5 ][ addr:1016 sz:4 ][ addr:1058 sz:3 ][ addr:1069 sz:3 ][ addr:1097 sz:3 ][ addr:1067 sz:2 ][ addr:1023 sz:2 ][ addr:1000 sz:2 ][ addr:1042 sz:2 ][ addr:1062 sz:1 ][ addr:1030 sz:1 ][ addr:1061 sz:1 ][ addr:1041 sz:1 ][ addr:1013 sz:1 ][ addr:1020 sz:1 ][ addr:1002 sz:1 ][ addr:1052 sz:1 ][ addr:1007 sz:1 ][ addr:1088 sz:1 ][ addr:1006 sz:1 ][ addr:1022 sz:1 ][ addr:1080 sz:1 ][ addr:1095 sz:1 ][ addr:1051 sz:1 ][ addr:1078 sz:1 ][ addr:1021 sz:1 ][ addr:1079 sz:1 ][ addr:1096 sz:1 ][ addr:1036 sz:1 ][ addr:1087 sz:1 ]
+
+jegjasperbarajan@ubuntu-jeg:~/Desktop/OSTEP-HOMEWORK/Chapter 17$ 
+
+
+
+jegjasperbarajan@ubuntu-jeg:~/Desktop/OSTEP-HOMEWORK/Chapter 17$ python3 malloc.py -n 1000 -H 0 -p BEST -s 0 -l SIZESORT- -c
+seed 0
+size 100
+baseAddr 1000
+headerSize 0
+alignment -1
+policy BEST
+listOrder SIZESORT-
+coalesce False
+numOps 1000
+range 10
+percentAlloc 50
+allocList 
+compute True
+
+ptr[0] = Alloc(3) returned 1000 (searched 1 elements)
+Free List [ Size 1 ]: [ addr:1003 sz:97 ]
+
+Free(ptr[0])
+returned 0
+Free List [ Size 2 ]: [ addr:1003 sz:97 ][ addr:1000 sz:3 ]
+
+ptr[1] = Alloc(5) returned 1003 (searched 2 elements)
+Free List [ Size 2 ]: [ addr:1008 sz:92 ][ addr:1000 sz:3 ]
+
+Free(ptr[1])
+returned 0
+Free List [ Size 3 ]: [ addr:1008 sz:92 ][ addr:1003 sz:5 ][ addr:1000 sz:3 ]
+
+...
+...
+...
+...
+
+Free(ptr[585])
+returned 0
+Free List [ Size 29 ]: [ addr:1025 sz:5 ][ addr:1081 sz:5 ][ addr:1072 sz:5 ][ addr:1089 sz:5 ][ addr:1008 sz:5 ][ addr:1096 sz:4 ][ addr:1048 sz:4 ][ addr:1031 sz:3 ][ addr:1034 sz:3 ][ addr:1069 sz:3 ][ addr:1003 sz:3 ][ addr:1077 sz:3 ][ addr:1059 sz:2 ][ addr:1000 sz:2 ][ addr:1094 sz:2 ][ addr:1023 sz:2 ][ addr:1068 sz:1 ][ addr:1013 sz:1 ][ addr:1061 sz:1 ][ addr:1041 sz:1 ][ addr:1030 sz:1 ][ addr:1022 sz:1 ][ addr:1006 sz:1 ][ addr:1007 sz:1 ][ addr:1052 sz:1 ][ addr:1014 sz:1 ][ addr:1015 sz:1 ][ addr:1002 sz:1 ][ addr:1080 sz:1 ]
+
+Free(ptr[583])
+returned 0
+Free List [ Size 30 ]: [ addr:1053 sz:6 ][ addr:1025 sz:5 ][ addr:1081 sz:5 ][ addr:1072 sz:5 ][ addr:1089 sz:5 ][ addr:1008 sz:5 ][ addr:1096 sz:4 ][ addr:1048 sz:4 ][ addr:1031 sz:3 ][ addr:1034 sz:3 ][ addr:1069 sz:3 ][ addr:1003 sz:3 ][ addr:1077 sz:3 ][ addr:1059 sz:2 ][ addr:1000 sz:2 ][ addr:1094 sz:2 ][ addr:1023 sz:2 ][ addr:1068 sz:1 ][ addr:1013 sz:1 ][ addr:1061 sz:1 ][ addr:1041 sz:1 ][ addr:1030 sz:1 ][ addr:1022 sz:1 ][ addr:1006 sz:1 ][ addr:1007 sz:1 ][ addr:1052 sz:1 ][ addr:1014 sz:1 ][ addr:1015 sz:1 ][ addr:1002 sz:1 ][ addr:1080 sz:1 ]
+
+Free(ptr[588])
+returned 0
+Free List [ Size 31 ]: [ addr:1053 sz:6 ][ addr:1025 sz:5 ][ addr:1081 sz:5 ][ addr:1072 sz:5 ][ addr:1089 sz:5 ][ addr:1008 sz:5 ][ addr:1096 sz:4 ][ addr:1048 sz:4 ][ addr:1031 sz:3 ][ addr:1034 sz:3 ][ addr:1069 sz:3 ][ addr:1003 sz:3 ][ addr:1077 sz:3 ][ addr:1059 sz:2 ][ addr:1000 sz:2 ][ addr:1094 sz:2 ][ addr:1023 sz:2 ][ addr:1042 sz:2 ][ addr:1068 sz:1 ][ addr:1013 sz:1 ][ addr:1061 sz:1 ][ addr:1041 sz:1 ][ addr:1030 sz:1 ][ addr:1022 sz:1 ][ addr:1006 sz:1 ][ addr:1007 sz:1 ][ addr:1052 sz:1 ][ addr:1014 sz:1 ][ addr:1015 sz:1 ][ addr:1002 sz:1 ][ addr:1080 sz:1 ]
+
+ptr[590] = Alloc(9) returned -1 (searched 31 elements)
+Free List [ Size 31 ]: [ addr:1053 sz:6 ][ addr:1025 sz:5 ][ addr:1081 sz:5 ][ addr:1072 sz:5 ][ addr:1089 sz:5 ][ addr:1008 sz:5 ][ addr:1096 sz:4 ][ addr:1048 sz:4 ][ addr:1031 sz:3 ][ addr:1034 sz:3 ][ addr:1069 sz:3 ][ addr:1003 sz:3 ][ addr:1077 sz:3 ][ addr:1059 sz:2 ][ addr:1000 sz:2 ][ addr:1094 sz:2 ][ addr:1023 sz:2 ][ addr:1042 sz:2 ][ addr:1068 sz:1 ][ addr:1013 sz:1 ][ addr:1061 sz:1 ][ addr:1041 sz:1 ][ addr:1030 sz:1 ][ addr:1022 sz:1 ][ addr:1006 sz:1 ][ addr:1007 sz:1 ][ addr:1052 sz:1 ][ addr:1014 sz:1 ][ addr:1015 sz:1 ][ addr:1002 sz:1 ][ addr:1080 sz:1 ]
+
+
+based on what i've observed between ADDRSORT and SIZESORT-, both the without coalescing of the two still fills up the free list to the point where there's no large enough block to split but it seems the coalescing part of the two where started to see some difference, it seems that the SIZESORT- still manage to fill in a lot of blocks compared to ADDRSORT where most of the time, it will landed at the end of simulation where only 1 large free block in the free list. i've in its nature how memory coalesce blocks where they coalesce where the blocks where connected by address and both freed to be join again. for example block addr 1000 size 5 and block addr 1005 size 95.
+
