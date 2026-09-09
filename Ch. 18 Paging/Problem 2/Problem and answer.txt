@@ -1,0 +1,14 @@
+2. Now let’s do some translations. Start with some small examples,
+and change the number of pages that are allocated to the address
+space with the -u flag. For example:
+paging-linear-translate.py -P 1k -a 16k -p 32k -v -u 0
+paging-linear-translate.py -P 1k -a 16k -p 32k -v -u 25
+paging-linear-translate.py -P 1k -a 16k -p 32k -v -u 50
+paging-linear-translate.py -P 1k -a 16k -p 32k -v -u 75
+paging-linear-translate.py -P 1k -a 16k -p 32k -v -u 100
+What happens as you increase the percentage of pages that are al-
+located in each address space?
+
+Solution:
+
+It seems to me that the more i've increased the percentage, the more pages are valid. i've also noticed despite I've input 25, 50, or 75, the # of pages available doesn't match the supposed # of pages valid that based on the percentage input, it's more like if you input 50 then the valid pages is probable greater than >50. it seems that allocating 0 will result non of the pages is valid and inputting 100 has the similar amount of valid to 75.
