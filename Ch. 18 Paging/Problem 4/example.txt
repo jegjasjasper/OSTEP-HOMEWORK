@@ -1,0 +1,28 @@
+jegjasperbarajan@ubuntu-jeg:~/Desktop/OSTEP-HOMEWORK/Ch. 18 Paging$ python3 paging-linear-translate.py -s 1 -a 64k -p 512k -P 128k -c
+ARG seed 1
+ARG address space size 64k
+ARG phys mem size 512k
+ARG page size 128k
+ARG verbose False
+ARG addresses -1
+
+Error in argument: address space must be a multiple of the pagesize
+jegjasperbarajan@ubuntu-jeg:~/Desktop/OSTEP-HOMEWORK/Ch. 18 Paging$ python3 paging-linear-translate.py -s 1 -a 64k -p 8k -P 16k -c
+ARG seed 1
+ARG address space size 64k
+ARG phys mem size 8k
+ARG page size 16k
+ARG verbose False
+ARG addresses -1
+
+Error: physical memory size must be GREATER than address space size (for this simulation)
+jegjasperbarajan@ubuntu-jeg:~/Desktop/OSTEP-HOMEWORK/Ch. 18 Paging$ python3 paging-linear-translate.py -s 1 -a 64k -p 128k -P 15k -c
+ARG seed 1
+ARG address space size 64k
+ARG phys mem size 128k
+ARG page size 15k
+ARG verbose False
+ARG addresses -1
+
+Error in argument: address space must be a multiple of the pagesize
+

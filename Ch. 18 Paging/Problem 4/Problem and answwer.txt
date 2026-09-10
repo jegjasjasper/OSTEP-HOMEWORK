@@ -1,0 +1,43 @@
+4. Use the program to try out some other problems. Can you find the
+limits of where the program doesn’t work anymore? For example,
+what happens if the address-space size is bigger than physical mem-
+ory?
+
+Solution:
+Experiment 1: What will happen if page size is greater than address space?
+
+jegjasperbarajan@ubuntu-jeg:~/Desktop/OSTEP-HOMEWORK/Ch. 18 Paging$ python3 paging-linear-translate.py -s 1 -a 64k -p 512k -P 128k -c
+ARG seed 1
+ARG address space size 64k
+ARG phys mem size 512k
+ARG page size 128k
+ARG verbose False
+ARG addresses -1
+
+Error in argument: address space must be a multiple of the pagesize
+
+Experiment 2: what will happen if physical address space is greater than both page size and address space?
+
+jegjasperbarajan@ubuntu-jeg:~/Desktop/OSTEP-HOMEWORK/Ch. 18 Paging$ python3 paging-linear-translate.py -s 1 -a 64k -p 8k -P 16k -c
+ARG seed 1
+ARG address space size 64k
+ARG phys mem size 8k
+ARG page size 16k
+ARG verbose False
+ARG addresses -1
+
+Error: physical memory size must be GREATER than address space size (for this simulation)
+
+Experiment 3: what will happen if page size is an odd # amount?
+
+Error: physical memory size must be GREATER than address space size (for this simulation)
+jegjasperbarajan@ubuntu-jeg:~/Desktop/OSTEP-HOMEWORK/Ch. 18 Paging$ python3 paging-linear-translate.py -s 1 -a 64k -p 128k -P 15k -c
+ARG seed 1
+ARG address space size 64k
+ARG phys mem size 128k
+ARG page size 15k
+ARG verbose False
+ARG addresses -1
+
+Error in argument: address space must be a multiple of the pagesize
+
